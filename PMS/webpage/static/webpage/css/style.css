@@ -1,0 +1,21 @@
+table tr th,table tr td{
+    text-align: center;
+    vertical-align: middle;
+}
+.navbar-nav .nav-link.active, .navbar-nav .show>.nav-link {
+    font-weight: bold;
+}
+.status{
+    color: white;
+    user-select: none;
+}
+.status.bg-light{
+    color: black;
+}
+.btn{
+    border: 1px solid gray !important;
+    margin-right: 10px;
+}
+.table{
+    margin-top: 20px;
+}

@@ -1,0 +1,17 @@
+{% extends 'webpage/base.html' %}
+
+{% block content %}
+<div class="container" style="padding: 50px">
+    <form method="post">
+        {% csrf_token %}
+        {% for f in form %}
+        <div class="mb-3">
+            <label for="{{ f.id_for_label }}" class="form-label">{{ f.label }}:</label>
+            {{ f }}
+            <div class="form-error" >{{ f.errors }}</div>
+        </div>
+        {% endfor %}
+        <button type="submit" class="btn btn-primary">Добавить</button>
+    </form>
+</div>
+{% endblock %}

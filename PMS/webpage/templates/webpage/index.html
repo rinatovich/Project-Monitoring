@@ -1,0 +1,65 @@
+{% extends 'webpage/base.html' %}
+
+{% block content %}
+<div class="table container-fluid">
+    <table class="table table-bordered">
+  <thead>
+    <tr>
+      {% for th in category.fields.all %}
+      <th scope="col">{{th}}</th>
+      {% endfor %}
+    </tr>
+  </thead>
+  <tbody>
+  {% for p in projects %}
+    <tr>
+      <th class="order" scope="row"></th>
+      <td>{{p.title}}</td>
+      <td>{{p.work_statement}}</td>
+      <td>
+        {% if p.contract_id %}
+          {{p.contract_id}}
+        {% else %}
+          -
+        {% endif %}
+      </td>
+      <td>{{p.note}}</td>
+      <td>
+        {% if p.customer %}
+          {{p.customer}}
+        {% else %}
+          -
+        {% endif %}
+      </td>
+      <td>
+        <ul class="list-group list-group-flush">
+        {% for c in p.executer_company.all %}
+          <li class="list-group-item">{{c}}</li>
+        {% endfor %}
+        </ul>
+      </td>
+      <td>
+        <ul class="list-group list-group-flush">
+        {% for m in p.manager.all %}
+          <li class="list-group-item">{{m}}</li>
+          {% endfor %}
+        </ul>
+      </td>
+      <td class="{{p.status.className}} status">
+        {{ p.status.title }}
+      </td>
+      {% if category.id != 4 %}
+      <td>
+        {% if p.deadline %}
+          {{p.deadline}}
+        {% else %}
+          -
+        {% endif %}
+      </td>
+      {% endif %}
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+</div>
+{% endblock %}
