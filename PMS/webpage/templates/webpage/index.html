@@ -5,6 +5,11 @@
     <table class="table table-bordered">
   <thead>
     <tr>
+      <th>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+        </div>
+      </th>
       {% for th in category.fields.all %}
       <th scope="col">{{th}}</th>
       {% endfor %}
@@ -13,6 +18,11 @@
   <tbody>
   {% for p in projects %}
     <tr>
+      <td>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+        </div>
+      </td>
       <th class="order" scope="row"></th>
       <td>{{p.title}}</td>
       <td>{{p.work_statement}}</td>
@@ -31,7 +41,7 @@
           -
         {% endif %}
       </td>
-      <td>
+      <td class="executer_company ">
         <ul class="list-group list-group-flush">
         {% for c in p.executer_company.all %}
           <li class="list-group-item">{{c}}</li>

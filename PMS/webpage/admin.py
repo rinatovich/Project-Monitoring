@@ -49,7 +49,11 @@ class CategoryAdmin(admin.ModelAdmin):
     filter_horizontal = ['fields']
 
 
-admin.site.register(Manager)
+class ManagerAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name')
+
+
+admin.site.register(Manager,ManagerAdmin)
 admin.site.register(Company)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Project, ProjectAdmin)
