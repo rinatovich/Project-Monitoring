@@ -2,6 +2,7 @@ from django.contrib import messages
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.views.generic import FormView, CreateView, ListView
+from rest_framework import generics
 
 from .forms import AddProjectForm
 from .models import *
@@ -10,6 +11,7 @@ from openpyxl import load_workbook
 from .admin import ProjectResource
 
 # Create your views here.
+from .serializers import ProjectSerializer, CategorySerializer
 from .utils import DataMixin
 
 menu = [{'text': 'Изменить', 'url': '/admin/webpage/project/'}, ]
@@ -42,6 +44,10 @@ def index(request):
     return redirect('category/stroitelno-montazhnye-raboty')
 
 
+def shutdown(request):
+    return render(request, 'webpage/shutdown.html')
+
+
 class add(CreateView):
     template_name = 'webpage/add.html'
     success_url = '/'
@@ -64,3 +70,8 @@ class ProjectCategory(DataMixin, ListView):
         c_def = self.get_user_context(title='Category - ' + str(c.title),
                                       cat_selected=c.pk)
         return dict(list(context.items()) + list(c_def.items()))
+
+
+class ProjectAPIView(generics.ListAPIView):
+    queryset = Project.objects.all()
+    serializer_class = ProjectSerializer

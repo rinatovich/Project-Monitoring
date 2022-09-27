@@ -10,7 +10,9 @@ urlpatterns = [
     path('projects', index, name='projects'),
     path('add', add.as_view(), name='add'),
     path('techservice', index, name='techservice'),
-    path('category/<slug:cat_slug>/', ProjectCategory.as_view(), name='category')
+    path('category/<slug:cat_slug>/', ProjectCategory.as_view(), name='category'),
+    path('shutdown', shutdown),
+    path('api/project', ProjectAPIView.as_view()),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
