@@ -19,3 +19,16 @@ table tr th,table tr td{
 .table{
     margin-top: 20px;
 }
+
+.fixed-table thead{
+       position: sticky;
+       top: 0;
+       z-index: 1;
+       background: white;
+       outline: 1px solid #dee2e6;
+}
+
+.dropdown{
+    float: left;
+    margin-bottom: 30px;
+}

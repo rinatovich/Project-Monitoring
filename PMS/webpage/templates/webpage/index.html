@@ -2,7 +2,33 @@
 
 {% block content %}
 <div class="table container-fluid">
-    <table class="table table-bordered">
+    <div class="dropdown manager-filter">
+    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+      {% if active_manager %}
+        {% for am in active_manager %}
+          {{ am.name }}
+        {% endfor %}
+      {% else %}
+      Все менеджеры
+      {% endif %}
+    </button>
+    <ul class="dropdown-menu">
+      {% for m in managers %}
+        <li><a class="dropdown-item managers_filter_item" id="{{m.id}}" href="#">{{m.name}}</a></li>
+      {% endfor %}
+    </ul>
+  </div>
+  <div class="dropdown company-filter">
+      <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+        Все компании
+      </button>
+      <ul class="dropdown-menu">
+        {% for c in companies %}
+          <li><a class="dropdown-item" id="{{c.id}}" href="#">{{c.title}}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  <table  class="table table-bordered fixed-table">
   <thead>
     <tr>
       <th>
