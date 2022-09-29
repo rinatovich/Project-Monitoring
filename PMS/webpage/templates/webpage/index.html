@@ -2,6 +2,7 @@
 
 {% block content %}
 <div class="table container-fluid">
+<button id="download" type="button" class="btn btn-primary">Download</button>
     <div class="dropdown manager-filter">
     <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
       {% if active_manager %}
@@ -13,6 +14,7 @@
       {% endif %}
     </button>
     <ul class="dropdown-menu">
+      <li><a class="dropdown-item managers_filter_item" id="0" href="#">Все менеджеры</a></li>
       {% for m in managers %}
         <li><a class="dropdown-item managers_filter_item" id="{{m.id}}" href="#">{{m.name}}</a></li>
       {% endfor %}
@@ -20,15 +22,22 @@
   </div>
   <div class="dropdown company-filter">
       <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-        Все компании
+        {% if active_company %}
+        {% for ac in active_company %}
+          {{ ac.title }}
+        {% endfor %}
+      {% else %}
+      Все компании
+      {% endif %}
       </button>
       <ul class="dropdown-menu">
+        <li><a class="dropdown-item companies_filter_item" id="0" href="#">Все организации</a></li>
         {% for c in companies %}
-          <li><a class="dropdown-item" id="{{c.id}}" href="#">{{c.title}}</a></li>
+          <li><a class="dropdown-item companies_filter_item" id="{{c.id}}" href="#">{{c.title}}</a></li>
         {% endfor %}
       </ul>
     </div>
-  <table  class="table table-bordered fixed-table">
+  <table id="projects"  class="table table-bordered fixed-table">
   <thead>
     <tr>
       <th>
@@ -93,6 +102,11 @@
         {% endif %}
       </td>
       {% endif %}
+      <td class="notes">
+        {% for note in p.note_set.all %}
+          {{note.text}}
+        {% endfor %}
+      </td>
     </tr>
   {% endfor %}
   </tbody>

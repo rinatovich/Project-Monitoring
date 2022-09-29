@@ -32,14 +32,25 @@ class ProjectCategory(DataMixin, ListView):
     active_company = None
 
     def get_queryset(self):
-        if(self.request.GET):
-            if (self.request.GET['manager']):
+        if self.request.GET:
+            print(self.request.GET)
+            if all(k in self.request.GET for k in ('manager', 'company')):
                 managers = self.request.GET['manager'].split(',')
                 self.active_manager = Manager.objects.filter(id__in=managers)
-            if (self.request.GET['company']):
                 companies = self.request.GET['company'].split(',')
                 self.active_company = Company.objects.filter(id__in=companies)
-            return Project.objects.filter(cat__slug=self.kwargs['cat_slug'], manager__pk__in=managers, company__pk__in=companies).select_related('cat')
+                return Project.objects.filter(cat__slug=self.kwargs['cat_slug'], manager__pk__in=managers,
+                                              executer_company__pk__in=companies).select_related('cat')
+            elif 'company' in self.request.GET:
+                companies = self.request.GET['company'].split(',')
+                self.active_company = Company.objects.filter(id__in=companies)
+                return Project.objects.filter(cat__slug=self.kwargs['cat_slug'],
+                                              executer_company__pk__in=companies).select_related('cat')
+            elif 'manager' in self.request.GET:
+                managers = self.request.GET['manager'].split(',')
+                self.active_manager = Manager.objects.filter(id__in=managers)
+                return Project.objects.filter(cat__slug=self.kwargs['cat_slug'],
+                                              manager__pk__in=managers).select_related('cat')
         else:
             return Project.objects.filter(cat__slug=self.kwargs['cat_slug']).select_related('cat')
 
