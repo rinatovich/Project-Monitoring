@@ -38,6 +38,7 @@ class ProjectAdmin(ImportExportActionModelAdmin):
     search_fields = ('title',)
     ordering = ('id',)
     list_filter = ('cat',)
+    prepopulated_fields = {'slug': ('title',)}
     filter_horizontal = ['manager', 'executer_company']
 
 

@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
-from django.views.generic import CreateView, ListView
+from django.views.generic import CreateView, ListView, UpdateView
 from .forms import AddProjectForm
 from .models import *
 from .utils import DataMixin
@@ -68,3 +68,10 @@ class ProjectCategory(DataMixin, ListView):
         c_def = self.get_user_context(title='Category - ' + str(c.title),
                                       cat_selected=c.pk)
         return dict(list(context.items()) + list(c_def.items()))
+
+
+class ProjectUpdateView(UpdateView):
+    model = Project
+    fields = [field.name for field in Project._meta.fields]
+    template_name = 'webpage/project_update.html'
+    template_name_suffix = '_update'

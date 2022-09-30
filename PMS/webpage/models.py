@@ -96,10 +96,14 @@ class Project(models.Model):
     deadline = models.DateTimeField(null=True, blank=True, verbose_name="Сроки исполнения")
     cat = models.ForeignKey(Category, verbose_name="Категория", null=True, blank=True, on_delete=models.CASCADE)
     status = models.ForeignKey(Status, on_delete=models.CASCADE, null=True, blank=True, verbose_name="Статус")
+    slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name="URL", null=True, blank=True)
 
 
     def __str__(self):
         return self.title
+
+    def get_absolute_url(self):
+        return reverse('project', kwargs={'slug': self.slug})
 
     class Meta:
         verbose_name = 'Проекты'
