@@ -16,8 +16,12 @@ class ProjectForm(forms.ModelForm):
         model = Project
         fields = '__all__'
         widgets = {
-            'title': forms.TextInput(attrs={'class': 'form-input'}),
-            'notice': forms.Textarea(attrs={'cols': 70, 'rows': 5}),
+            'title': forms.TextInput(attrs={'class': 'form-control '}),
+            'notice': forms.Textarea(attrs={'cols': 70, 'rows': 5, 'class': 'form-control'}),
+            'work_statement': forms.Textarea(attrs={'class': 'form-control'}),
+            'contract_id': forms.TextInput(attrs={'class': 'form-control'}),
+            'customer': forms.TextInput(attrs={'class': 'form-control'}),
+            'deadline': forms.DateInput(attrs={'type':'date'})
         }
 
     # title = forms.CharField(max_length=250)
