@@ -1,5 +1,5 @@
 let order = document.querySelectorAll('.order');
-for(i=0; i<order.length; i++){
+for(let i=0; i<order.length; i++){
     order[i].innerText = i+1;
 }
 
@@ -39,26 +39,9 @@ urlRedirecter(dropdown_item_managers, 'manager');
 
 
 
-//let wb = XLSX.utils.table_to_book(document.querySelector('#projects'),{sheet:"Sheet JS"});
-//
-//let wbout = XLSX.write(wb, {booktype: 'xlsx', bookSST: true, type: 'binary'});
-//
-//function s2ab(s) {
-//              let buf = new ArrayBuffer(s.length);
-//              let view = new Uint8Array(buf);
-//              for (var i=0; i<s.length; i++) view[i] = s.charCodeAt(i) & 0xFF;
-//              return buf;
-//            }
-
-//document.querySelector('#download').addEventListener('click', ()=>{
-//    saveAs(new Blob([s2ab(wbout)],{type:"application/octet-stream"}), 'test.xlsx');
-//})
-
-
-
-
-
-document.querySelector('#allCheck').addEventListener('click', (event)=>{
+let checkboxes = document.querySelector('#allCheck');
+if (checkboxes != null){
+    checkboxes.addEventListener('click', (event)=>{
     let table = document.querySelector('#projects');
     let checkboxes = document.querySelectorAll('.checkboxes');
 
@@ -73,10 +56,13 @@ document.querySelector('#allCheck').addEventListener('click', (event)=>{
         })
     }
 })
+}
 
 
-document.querySelector('#download').addEventListener('click', ()=>{
-    
+let downloadBtn = document.querySelector('#download');
+if(downloadBtn != null){
+    downloadBtn.addEventListener('click', ()=>{
+
 
     let table = document.querySelector('#projects');
 
@@ -121,10 +107,50 @@ document.querySelector('#download').addEventListener('click', ()=>{
      let  title = document.querySelector('.cat_active').innerText;
 
 
-    
+
      let wb = XLSX.utils.table_to_book(temp,{sheet:"Sheet JS"});
- 
+
      let wbout = XLSX.write(wb, {booktype: 'xlsx', bookSST: true, type: 'binary'});
- 
+
      XLSX.writeFile(wb, `${title}.xlsx`);
 })
+}
+
+
+let slug = document.querySelector('input[name="slug"]');
+let title = document.querySelector('input[name="title"]');
+if (slug != null && title != null){
+    title.addEventListener('input', (event)=>{
+        function translit(word){
+            let answer = '';
+            let converter = {
+                'а': 'a',    'б': 'b',    'в': 'v',    'г': 'g',    'д': 'd',
+                'е': 'e',    'ё': 'e',    'ж': 'zh',   'з': 'z',    'и': 'i',
+                'й': 'y',    'к': 'k',    'л': 'l',    'м': 'm',    'н': 'n',
+                'о': 'o',    'п': 'p',    'р': 'r',    'с': 's',    'т': 't',
+                'у': 'u',    'ф': 'f',    'х': 'h',    'ц': 'c',    'ч': 'ch',
+                'ш': 'sh',   'щ': 'sch',  'ь': '',     'ы': 'y',    'ъ': '',
+                'э': 'e',    'ю': 'yu',   'я': 'ya',
+
+                'А': 'A',    'Б': 'B',    'В': 'V',    'Г': 'G',    'Д': 'D',
+                'Е': 'E',    'Ё': 'E',    'Ж': 'Zh',   'З': 'Z',    'И': 'I',
+                'Й': 'Y',    'К': 'K',    'Л': 'L',    'М': 'M',    'Н': 'N',
+                'О': 'O',    'П': 'P',    'Р': 'R',    'С': 'S',    'Т': 'T',
+                'У': 'U',    'Ф': 'F',    'Х': 'H',    'Ц': 'C',    'Ч': 'Ch',
+                'Ш': 'Sh',   'Щ': 'Sch',  'Ь': '',     'Ы': 'Y',    'Ъ': '',
+                'Э': 'E',    'Ю': 'Yu',   'Я': 'Ya',   ' ': '-'
+            };
+
+            for (let i = 0; i < word.length; ++i ) {
+                if (converter[word[i]] == undefined){
+                    answer += word[i];
+                } else {
+                    answer += converter[word[i]];
+                }
+            }
+
+            return answer.toLowerCase();
+        }
+        slug.value = translit(event.target.value);
+    })
+}

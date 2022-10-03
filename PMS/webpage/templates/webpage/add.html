@@ -2,7 +2,13 @@
 
 {% block content %}
 <div class="container" style="padding: 50px">
-    <form method="post">
+    <style>
+        a[href='/project/add']{
+            color: red !important;
+            font-weight: bold;
+        }
+    </style>
+    <form method="post" action="{% url 'add' %}">
         {% csrf_token %}
         {% for f in form %}
         <div class="mb-3">

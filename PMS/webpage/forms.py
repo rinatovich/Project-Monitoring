@@ -2,23 +2,32 @@ from django import forms
 from .models import *
 
 
-class AddProjectForm(forms.ModelForm):
+class ProjectForm(forms.ModelForm):
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['executor_company'].checked = 1
+        self.fields['cat'].empty_label = "Категория не выбрана"
+        self.fields['status'].empty_label = "Статус не установлен"
 
-    executor_company = forms.ModelMultipleChoiceField(
-        queryset=Company.objects.all(),
-        widget=forms.CheckboxSelectMultiple)
-    manager = forms.ModelMultipleChoiceField(
-        queryset=Manager.objects.all(),
-        widget=forms.CheckboxSelectMultiple)
-
+        # self.fields['executor_company'].initial = [company.id for company in kwargs['instance'].executor_company.all()]
+        # self.fields['manager'].initial = [manager.id for manager in kwargs['instance'].manager.all()]
 
     class Meta:
         model = Project
-        fields = [field.name for field in Project._meta.fields]
+        fields = '__all__'
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-input'}),
-            'content': forms.Textarea(attrs={'cols': 60, 'rows': 10})
+            'notice': forms.Textarea(attrs={'cols': 70, 'rows': 5}),
         }
+
+    # title = forms.CharField(max_length=250)
+    # work_statement = forms.CharField(widget=forms.Textarea(attrs={'cols': 60, 'rows': 10}))
+    # contract_id = forms.CharField(max_length=250)
+    # notice = forms.CharField(widget=forms.Textarea(attrs={'cols': 60, 'rows': 10}))
+    # customer = forms.CharField(max_length=250)
+    # deadline = forms.DateTimeField()
+    # cat = forms.ModelChoiceField(queryset=Category.objects.all())
+    # status = forms.ModelChoiceField(queryset=Status.objects.all())
+    # slug = forms.SlugField(max_length=255)
+    executor_company = forms.ModelMultipleChoiceField(queryset=Company.objects.all(), widget=forms.CheckboxSelectMultiple)
+    manager = forms.ModelMultipleChoiceField(queryset=Manager.objects.all(), widget=forms.CheckboxSelectMultiple)

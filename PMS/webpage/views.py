@@ -1,27 +1,20 @@
-from django.http import HttpResponse
-from django.shortcuts import render, redirect
+from django.http import HttpResponse, HttpResponseNotFound
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import CreateView, ListView, UpdateView
-from .forms import AddProjectForm
+from .forms import ProjectForm
 from .models import *
 from .utils import DataMixin
 
 # menu settings
-menu = [{'text': 'Изменить', 'url': '/admin/webpage/project/'}, ]
+menu = [{'text': 'Изменить', 'url': '/admin/webpage/project/'},
+        {'text': 'Добавить', 'url': '/project/add'}]
 cats = Category.objects.all()
 for c in cats:
     menu.append({'text': c.title, 'url': f'/category/{c.slug}'})
 
 
-# menu settings
-
 def index(request):
     return redirect('category/stroitelno-montazhnye-raboty')
-
-
-class add(CreateView):
-    template_name = 'webpage/add.html'
-    success_url = '/'
-    form_class = AddProjectForm
 
 
 class ProjectCategory(DataMixin, ListView):
@@ -63,16 +56,36 @@ class ProjectCategory(DataMixin, ListView):
         context['iter'] = 1
         context['managers'] = Manager.objects.all()
         context['companies'] = Company.objects.all()
-        c = Category.objects.get(slug=self.kwargs['cat_slug'])
-        context['category'] = c
+        categories = Category.objects.get(slug=self.kwargs['cat_slug'])
+        context['category'] = categories
         c_def = self.get_user_context(title='Category - ' + str(c.title),
                                       cat_selected=c.pk)
+        c_def['menu'] = menu
         return dict(list(context.items()) + list(c_def.items()))
+
+
+class AddProjectView(CreateView):
+    model = Project
+    form_class = ProjectForm
+    template_name = "webpage/add.html"
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['menu'] = menu
+        return context
 
 
 class ProjectUpdateView(UpdateView):
     model = Project
-    form_class = AddProjectForm
-    # fields = [field.name for field in Project._meta.fields]
+    form_class = ProjectForm
     template_name = 'webpage/project_update.html'
     template_name_suffix = '_update'
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['menu'] = menu
+        return context
+
+
+def pageNotFound(request, exception):
+    return HttpResponseNotFound('<h1>Страница не найдена</h1>')

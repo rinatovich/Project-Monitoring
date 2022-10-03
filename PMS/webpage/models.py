@@ -15,6 +15,7 @@ class Manager(models.Model):
 
 
 class Company(models.Model):
+    objects = None
     title = models.CharField(max_length=250, verbose_name='Название организации')
     image = models.FileField(upload_to='images/%Y/%m/%d/', null=True, blank=True)
 
