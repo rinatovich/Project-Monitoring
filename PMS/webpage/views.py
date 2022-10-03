@@ -40,12 +40,12 @@ class ProjectCategory(DataMixin, ListView):
                 companies = self.request.GET['company'].split(',')
                 self.active_company = Company.objects.filter(id__in=companies)
                 return Project.objects.filter(cat__slug=self.kwargs['cat_slug'], manager__pk__in=managers,
-                                              executer_company__pk__in=companies).select_related('cat')
+                                              executor_company__pk__in=companies).select_related('cat')
             elif 'company' in self.request.GET:
                 companies = self.request.GET['company'].split(',')
                 self.active_company = Company.objects.filter(id__in=companies)
                 return Project.objects.filter(cat__slug=self.kwargs['cat_slug'],
-                                              executer_company__pk__in=companies).select_related('cat')
+                                              executor_company__pk__in=companies).select_related('cat')
             elif 'manager' in self.request.GET:
                 managers = self.request.GET['manager'].split(',')
                 self.active_manager = Manager.objects.filter(id__in=managers)
@@ -72,6 +72,7 @@ class ProjectCategory(DataMixin, ListView):
 
 class ProjectUpdateView(UpdateView):
     model = Project
-    fields = [field.name for field in Project._meta.fields]
+    form_class = AddProjectForm
+    # fields = [field.name for field in Project._meta.fields]
     template_name = 'webpage/project_update.html'
     template_name_suffix = '_update'

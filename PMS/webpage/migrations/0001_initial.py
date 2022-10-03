@@ -37,7 +37,7 @@ class Migration(migrations.Migration):
                 ('note', models.TextField(blank=True, null=True)),
                 ('customer', models.CharField(blank=True, max_length=250, null=True)),
                 ('deadline', models.DateTimeField(blank=True, null=True)),
-                ('executer_company', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='webpage.company')),
+                ('executor_company', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='webpage.company')),
                 ('primary_manager', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='first_manager', to='webpage.manager', unique=True, verbose_name='Primary manager')),
                 ('secondary_manager', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='second_manager', to='webpage.manager', unique=True, verbose_name='secondary manager')),
             ],

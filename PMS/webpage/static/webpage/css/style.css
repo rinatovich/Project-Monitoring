@@ -20,7 +20,7 @@ table tr th,table tr td{
 
 .title-project a{
     text-decoration: none !important;
-    color: blue !important;
+    color: black !important;
 }
 
 .table{
@@ -47,7 +47,6 @@ table tr th,table tr td{
     display: none;
 }
 @media print {
-    /* здесь будут стили для печати */
     body {
         font-family: 'Times New Roman';
         font-size: 14px;
@@ -71,8 +70,4 @@ table tr th,table tr td{
     .pdf-title{
         display: block;
     }
-    /* @page {
-        size: auto;   /* auto is the initial value */
-        margin: 20px;  /* this affects the margin in the printer settings */
-    } */
 }

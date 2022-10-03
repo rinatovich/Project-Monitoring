@@ -12,7 +12,7 @@ from import_export.widgets import ForeignKeyWidget, ManyToManyWidget
 class ProjectResource(resources.ModelResource):
     manager = fields.Field(column_name='Менеджер', attribute='manager',
                            widget=ForeignKeyWidget(Manager, 'name'))
-    executer_company = fields.Field(column_name='Исполняющая организация', attribute='executer_company',
+    executor_company = fields.Field(column_name='Исполняющая организация', attribute='executer_company',
                                     widget=ForeignKeyWidget(Company, 'title'))
     list_display = [field.name for field in Project._meta.fields]
     title = Field(attribute='title', column_name='Наименование объекта')
@@ -39,7 +39,7 @@ class ProjectAdmin(ImportExportActionModelAdmin):
     ordering = ('id',)
     list_filter = ('cat',)
     prepopulated_fields = {'slug': ('title',)}
-    filter_horizontal = ['manager', 'executer_company']
+    filter_horizontal = ['manager', 'executor_company']
 
 
 class CategoryAdmin(admin.ModelAdmin):
@@ -58,9 +58,6 @@ class CompanyAdmin(admin.ModelAdmin):
     list_display = ('id', 'title')
 
 
-class NoteAdmin(admin.ModelAdmin):
-    list_display = ('id', 'text', 'created_at', 'updated_at')
-
 
 admin.site.register(Manager, ManagerAdmin)
 admin.site.register(Company, CompanyAdmin)
@@ -68,4 +65,3 @@ admin.site.register(Category, CategoryAdmin)
 admin.site.register(Project, ProjectAdmin)
 admin.site.register(FieldItem)
 admin.site.register(Status)
-admin.site.register(Note)

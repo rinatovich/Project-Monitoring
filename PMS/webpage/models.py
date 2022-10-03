@@ -3,22 +3,8 @@ from django.db import models
 from django.urls import reverse
 
 
-class Note(models.Model):
-    text = models.CharField(max_length=500)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    def __str__(self):
-        return self.text
-
-    class Meta:
-        verbose_name = 'Указание'
-        verbose_name_plural = 'Указания'
-
-
-# Create your models here.
 class Manager(models.Model):
-    name = models.CharField(max_length=250)
+    name = models.CharField(max_length=250, verbose_name='Имя')
 
     def __str__(self):
         return self.name
@@ -29,7 +15,7 @@ class Manager(models.Model):
 
 
 class Company(models.Model):
-    title = models.CharField(max_length=250)
+    title = models.CharField(max_length=250, verbose_name='Название организации')
     image = models.FileField(upload_to='images/%Y/%m/%d/', null=True, blank=True)
 
     def __str__(self):
@@ -47,6 +33,10 @@ class Status(models.Model):
     def __str__(self):
         return self.title
 
+    class Meta:
+        verbose_name = "Статус"
+        verbose_name_plural = "Статусы"
+
 
 class FieldItem(models.Model):
     name = models.CharField(max_length=250)
@@ -55,8 +45,8 @@ class FieldItem(models.Model):
         return self.name
 
     class Meta:
-        verbose_name = 'Поля'
-        verbose_name_plural = 'Поля'
+        verbose_name = 'Поля категорий'
+        verbose_name_plural = 'Поля категорий'
         ordering = ['id']
 
 
@@ -92,12 +82,11 @@ class Project(models.Model):
     notice = models.TextField(null=True, blank=True, verbose_name="Примечание")
     customer = models.CharField(max_length=250, null=True, blank=True, verbose_name="Заказчик")
     manager = models.ManyToManyField(Manager, verbose_name="Менеджеры", null=True, blank=True)
-    executer_company = models.ManyToManyField(Company, verbose_name="Ответстве", null=True, blank=True)
+    executor_company = models.ManyToManyField(Company, verbose_name="Ответстве", null=True, blank=True)
     deadline = models.DateTimeField(null=True, blank=True, verbose_name="Сроки исполнения")
     cat = models.ForeignKey(Category, verbose_name="Категория", null=True, blank=True, on_delete=models.CASCADE)
     status = models.ForeignKey(Status, on_delete=models.CASCADE, null=True, blank=True, verbose_name="Статус")
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name="URL", null=True, blank=True)
-
 
     def __str__(self):
         return self.title
