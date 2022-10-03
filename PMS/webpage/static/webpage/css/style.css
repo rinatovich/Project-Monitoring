@@ -16,6 +16,13 @@ table tr th,table tr td{
     border: 1px solid gray !important;
     margin-right: 10px;
 }
+
+
+.title-project a{
+    text-decoration: none !important;
+    color: blue !important;
+}
+
 .table{
     margin-top: 20px;
 }
@@ -31,4 +38,41 @@ table tr th,table tr td{
 .dropdown{
     float: left;
     margin-bottom: 30px;
+}
+
+.notes{
+    min-width: 200px;
+}
+.pdf-title{
+    display: none;
+}
+@media print {
+    /* здесь будут стили для печати */
+    body {
+        font-family: 'Times New Roman';
+        font-size: 14px;
+    }
+    .checkbox{
+        display: none;
+    }
+    .table{
+        border-color: black !important;
+    }
+    .fixed-table thead{
+       position: sticky;
+       top: 0;
+       z-index: 1;
+       background: white;
+       outline: 1px solid black !important;
+    }
+    .navbar.navbar-expand-lg.bg-light, #download,.manager-filter, .company-filter{
+        display: none;
+    }
+    .pdf-title{
+        display: block;
+    }
+    /* @page {
+        size: auto;   /* auto is the initial value */
+        margin: 20px;  /* this affects the margin in the printer settings */
+    } */
 }

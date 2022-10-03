@@ -38,6 +38,7 @@ class ProjectAdmin(ImportExportActionModelAdmin):
     search_fields = ('title',)
     ordering = ('id',)
     list_filter = ('cat',)
+    prepopulated_fields = {'slug': ('title',)}
     filter_horizontal = ['manager', 'executer_company']
 
 
@@ -53,9 +54,18 @@ class ManagerAdmin(admin.ModelAdmin):
     list_display = ('id', 'name')
 
 
-admin.site.register(Manager,ManagerAdmin)
-admin.site.register(Company)
+class CompanyAdmin(admin.ModelAdmin):
+    list_display = ('id', 'title')
+
+
+class NoteAdmin(admin.ModelAdmin):
+    list_display = ('id', 'text', 'created_at', 'updated_at')
+
+
+admin.site.register(Manager, ManagerAdmin)
+admin.site.register(Company, CompanyAdmin)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Project, ProjectAdmin)
 admin.site.register(FieldItem)
 admin.site.register(Status)
+admin.site.register(Note)
