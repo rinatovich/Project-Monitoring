@@ -1,6 +1,6 @@
 from django.http import HttpResponse, HttpResponseNotFound
 from django.shortcuts import render, redirect, get_object_or_404
-from django.views.generic import CreateView, ListView, UpdateView
+from django.views.generic import CreateView, ListView, UpdateView, DetailView
 from .forms import ProjectForm
 from .models import *
 from .utils import DataMixin
@@ -64,7 +64,7 @@ class ProjectCategory(DataMixin, ListView):
         return dict(list(context.items()) + list(c_def.items()))
 
 
-class AddProjectView(CreateView):
+class AddProject(CreateView):
     model = Project
     form_class = ProjectForm
     template_name = "webpage/add.html"
@@ -75,7 +75,7 @@ class AddProjectView(CreateView):
         return context
 
 
-class ProjectUpdateView(UpdateView):
+class UpdateProject(UpdateView):
     model = Project
     form_class = ProjectForm
     template_name = 'webpage/project_update.html'
@@ -89,3 +89,13 @@ class ProjectUpdateView(UpdateView):
 
 def pageNotFound(request, exception):
     return HttpResponseNotFound('<h1>Страница не найдена</h1>')
+
+
+class ShowProject(DetailView):
+    model = Project
+    template_name = 'webpage/project.html'
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['menu'] = menu
+        return context

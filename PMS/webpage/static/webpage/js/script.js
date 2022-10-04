@@ -154,3 +154,19 @@ if (slug != null && title != null){
         slug.value = translit(event.target.value);
     })
 }
+
+
+
+let update_container = document.querySelector('.update_container');
+if (update_container!=null){
+    let dateInput = update_container.querySelector("input[type='date']")
+    console.log(dateInput.value)
+}
+//
+// let create_container = document.querySelector('.create_container');
+// if (create_container!=null){
+//     let dateInput = create_container.querySelector("input[type='date']")
+//     dateInput.addEventListener('input',()=>{
+//
+//     })
+// }

@@ -1,14 +1,14 @@
 {% extends 'webpage/base.html' %}
 
 {% block content %}
-<div class="container form__container" style="padding: 50px">
+<div class="container form__container create_container" style="padding: 50px">
     <style>
         a[href='/project/add']{
             color: red !important;
             font-weight: bold;
         }
     </style>
-    <form method="post" action="{% url 'add' %}">
+    <form method="post">
         <div class="form-group">
             {% csrf_token %}
             {% for f in form %}
