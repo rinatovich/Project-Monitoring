@@ -15,6 +15,7 @@ class Manager(models.Model):
 
 
 class Company(models.Model):
+    objects = None
     title = models.CharField(max_length=250, verbose_name='Название организации')
     image = models.FileField(upload_to='images/%Y/%m/%d/', null=True, blank=True)
 
@@ -83,7 +84,7 @@ class Project(models.Model):
     customer = models.CharField(max_length=250, null=True, blank=True, verbose_name="Заказчик")
     manager = models.ManyToManyField(Manager, verbose_name="Менеджеры", null=True, blank=True)
     executor_company = models.ManyToManyField(Company, verbose_name="Ответстве", null=True, blank=True)
-    deadline = models.DateTimeField(null=True, blank=True, verbose_name="Сроки исполнения")
+    deadline = models.DateField(null=True, blank=True, verbose_name="Сроки исполнения")
     cat = models.ForeignKey(Category, verbose_name="Категория", null=True, blank=True, on_delete=models.CASCADE)
     status = models.ForeignKey(Status, on_delete=models.CASCADE, null=True, blank=True, verbose_name="Статус")
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name="URL", null=True, blank=True)

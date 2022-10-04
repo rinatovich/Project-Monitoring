@@ -1,11 +1,25 @@
 {% extends 'webpage/base.html' %}
 
 {% block content %}
-<div class="container">
+<div class="container form__container update_container" style="padding: 50px">
+    <style>
+        a[href='/project/add']{
+            color: red !important;
+            font-weight: bold;
+        }
+    </style>
     <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Update">
+        <div class="form-group">
+            {% csrf_token %}
+            {% for f in form %}
+            <div class="mb-3">
+                <label for="{{ f.id_for_label }}" class="form-label">{{ f.label }}:</label>
+                {{ f }}
+                <div class="form-error" >{{ f.errors }}</div>
+            </div>
+            {% endfor %}
+            <button type="submit" class="btn btn-primary">Сохранитиь</button>
+        </div>
     </form>
 </div>
 {% endblock %}

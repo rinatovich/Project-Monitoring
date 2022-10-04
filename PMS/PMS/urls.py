@@ -16,8 +16,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path,include
 
+# noinspection PyUnresolvedReferences
+from webpage.views import pageNotFound
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('webpage.urls')),
 ]
 
+handler404 = pageNotFound

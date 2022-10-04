@@ -1,0 +1,67 @@
+{% extends 'webpage/base.html' %}
+
+{% block content %}
+<div class="container">
+    <h1>{{project.title}}</h1>
+    <table class="table table-striped">
+      <tbody>
+        <tr>
+          <th scope="row">Тип работ</th>
+          <td>{{project.work_statement}}</td>
+        </tr>
+        <tr>
+          <th scope="row">№ Договора</th>
+          <td>
+              {% if project.contract_id %}
+              {{project.contract_id}}
+              {% endif %}
+          </td>
+        </tr>
+        <tr>
+          <th scope="row">Состояние</th>
+          <td>{{project.notice}}</td>
+        </tr>
+        <tr>
+          <th scope="row">Заказчик</th>
+          <td>
+              {% if project.customer %}
+              {{project.customer}}
+              {% endif %}
+          </td>
+        </tr>
+        <tr>
+          <th scope="row">Испалняющее лицо</th>
+          <td>
+              {% for m in project.manager.all %}
+              {{m.name}}
+              {% endfor %}
+          </td>
+        </tr>
+        <tr>
+          <th scope="row">Исполняющая организация</th>
+          <td>
+              {% for ec in project.executor_company.all %}
+               {{ec.title}}
+              {% endfor %}
+          </td>
+        </tr>
+        <tr>
+          <th scope="row">Срок</th>
+          <td>
+              {% if project.deadline %}
+              {{project.deadline}}
+              {% endif %}
+          </td>
+        </tr>
+        <tr>
+          <th scope="row">Категория</th>
+          <td>{{project.cat}}</td>
+        </tr>
+        <tr>
+          <th scope="row">Статус</th>
+          <td>{{project.status}}</td>
+        </tr>
+    </table>
+    <a class="btn btn-primary" href="update/{{project.slug}}">Изменить</a>
+</div>
+{% endblock  %}
