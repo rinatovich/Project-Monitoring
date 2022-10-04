@@ -170,3 +170,22 @@ if (update_container!=null){
 //
 //     })
 // }
+
+
+// let note_input = document.querySelector('.note_input');
+// if(note_input!=null){
+//     note_input.addEventListener('submit',(event)=>{
+//         event.preventDefault();
+//         let data = {
+//             'msg': note_input.querySelector('input[type=text]').value
+//         };
+//
+//
+//         let xhr = new XMLHttpRequest();
+//         xhr.open("POST", document.URL);
+//         xhr.setRequestHeader("Accept", "application/json");
+//         xhr.setRequestHeader("Content-Type", "application/json");
+//
+//         xhr.send(data);
+//     })
+// }

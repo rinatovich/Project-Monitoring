@@ -1,7 +1,13 @@
-from django.http import HttpResponse, HttpResponseNotFound
+from django.contrib.auth import logout
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.views import LoginView
+from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse_lazy
 from django.views.generic import CreateView, ListView, UpdateView, DetailView
-from .forms import ProjectForm
+from .forms import ProjectForm, LoginUserForm
 from .models import *
 from .utils import DataMixin
 
@@ -17,7 +23,8 @@ def index(request):
     return redirect('category/stroitelno-montazhnye-raboty')
 
 
-class ProjectCategory(DataMixin, ListView):
+class ProjectCategory(LoginRequiredMixin, DataMixin, ListView):
+    login_url = '/login'
     model = Project
     template_name = 'webpage/index.html'
     context_object_name = 'projects'
@@ -64,7 +71,8 @@ class ProjectCategory(DataMixin, ListView):
         return dict(list(context.items()) + list(c_def.items()))
 
 
-class AddProject(CreateView):
+class AddProject(CreateView, LoginRequiredMixin):
+    login_url = '/login'
     model = Project
     form_class = ProjectForm
     template_name = "webpage/add.html"
@@ -75,7 +83,8 @@ class AddProject(CreateView):
         return context
 
 
-class UpdateProject(UpdateView):
+class UpdateProject(UpdateView, LoginRequiredMixin):
+    login_url = '/login'
     model = Project
     form_class = ProjectForm
     template_name = 'webpage/project_update.html'
@@ -91,11 +100,42 @@ def pageNotFound(request, exception):
     return HttpResponseNotFound('<h1>Страница не найдена</h1>')
 
 
-class ShowProject(DetailView):
+class ShowProject(DetailView, LoginRequiredMixin):
+    login_url = '/login'
     model = Project
     template_name = 'webpage/project.html'
+
+    def post(self, request, *args, **kwargs):
+        try:
+            checboxes = dict(request.POST)["checkbox"]
+            for c in checboxes:
+                Note.objects.filter(pk=c).delete()
+            return HttpResponseRedirect(self.request.path_info)
+        except:
+            project = Project.objects.filter(slug=kwargs['slug'])[0]
+            note = Note.objects.create(user=request.user, text=request.POST['text'])
+            project.note.add(note)
+            return HttpResponseRedirect(self.request.path_info)
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context['menu'] = menu
         return context
+
+
+class LoginUser(LoginView):
+    form_class = LoginUserForm
+    template_name = 'webpage/login.html'
+
+    def get_success_url(self):
+        return reverse_lazy('index')
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['menu'] = menu
+        return context
+
+
+def logout_user(request):
+    logout(request)
+    return redirect('login')

@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.contrib.postgres.fields import ArrayField
 from django.db import models
 from django.urls import reverse
@@ -68,6 +69,15 @@ class Category(models.Model):
         ordering = ['id']
 
 
+class Note(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Пользователь', null=True, blank=True)
+    text = models.CharField(max_length=250, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
+
+    def __str__(self):
+        return f'{self.user} прокоментировал {self.text}'
+
+
 class Project(models.Model):
     COMPLETED = 'Завершено'
     SUSPENDED = 'Приостановлено'
@@ -88,6 +98,7 @@ class Project(models.Model):
     cat = models.ForeignKey(Category, verbose_name="Категория", null=True, blank=True, on_delete=models.CASCADE)
     status = models.ForeignKey(Status, on_delete=models.CASCADE, null=True, blank=True, verbose_name="Статус")
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name="URL", null=True, blank=True)
+    note = models.ManyToManyField(Note, verbose_name="Поручение", null=True, blank=True, )
 
     def __str__(self):
         return self.title

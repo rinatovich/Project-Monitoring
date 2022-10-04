@@ -1,7 +1,7 @@
 {% extends 'webpage/base.html' %}
 
 {% block content %}
-<div class="container">
+<div class="container project_container">
     <h1>{{project.title}}</h1>
     <table class="table table-striped">
       <tbody>
@@ -63,5 +63,24 @@
         </tr>
     </table>
     <a class="btn btn-primary" href="update/{{project.slug}}">Изменить</a>
+    <form method="post" >
+    <div class="notes_container">
+        <h3>Поручения</h3>
+        {% for note in project.note.all %}
+        <div class="note">
+            <input name="checkbox" value="{{note.id}}" type="checkbox">
+            <div class="user">{{note.user}}</div>
+            <div class="text">{{note.text}}</div>
+            <div class="date">{{note.created_at.day}}.{{note.created_at.month}}.{{note.created_at.year}}|{{note.created_at.time}}</div>
+        </div>
+        {% endfor %}
+    </div>
+        <div class="note_input">
+            {% csrf_token %}
+            <input name="text" style="width: 70% !important;" class="form-control" type="text">
+            <button type="submit" class="btn btn-primary">Добавить</button>
+            <button type="submit" class="btn btn-dark"><i class="fa-solid fa-trash"></i></button>
+        </div>
+    </form>
 </div>
 {% endblock  %}

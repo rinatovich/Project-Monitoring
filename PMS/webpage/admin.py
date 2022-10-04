@@ -39,7 +39,7 @@ class ProjectAdmin(ImportExportActionModelAdmin):
     ordering = ('id',)
     list_filter = ('cat',)
     prepopulated_fields = {'slug': ('title',)}
-    filter_horizontal = ['manager', 'executor_company']
+    filter_horizontal = ['manager', 'executor_company','note']
 
 
 class CategoryAdmin(admin.ModelAdmin):
@@ -58,7 +58,12 @@ class CompanyAdmin(admin.ModelAdmin):
     list_display = ('id', 'title')
 
 
+class NoteAdmin(admin.ModelAdmin):
+    list_display = ('id', 'text', 'user')
 
+
+
+admin.site.register(Note,NoteAdmin)
 admin.site.register(Manager, ManagerAdmin)
 admin.site.register(Company, CompanyAdmin)
 admin.site.register(Category, CategoryAdmin)
