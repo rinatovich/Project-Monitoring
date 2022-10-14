@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 import os
 from pathlib import Path
 
+
+TELEGRAM_BOT_API_KEY = '5624063907:AAE8S_38MEVZq886mifsBDHBHWWCaUMkw6s'
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 DATE_INPUT_FORMATS = ['%Y-%m-%d']

@@ -127,6 +127,7 @@ table tr th,table tr td{
     display: flex;
     justify-content: center;
     align-items: center;
+
 }
 .notes_container .text{
     margin-left: 20px;

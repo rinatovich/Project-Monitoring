@@ -51,6 +51,11 @@ class ProjectCategory(LoginRequiredMixin, DataMixin, ListView):
                 self.active_manager = Manager.objects.filter(id__in=managers)
                 return Project.objects.filter(cat__slug=self.kwargs['cat_slug'],
                                               manager__pk__in=managers).select_related('cat')
+            elif 'customer' in self.request.GET:
+                customers = self.request.GET['manager'].split(',')
+                self.active_customer = Project.objects.filter(customer=customers)[0].customer
+                return Project.objects.filter(cat__slug=self.kwargs['cat_slug'],
+                                              customer=customers).select_related('cat')
         else:
             return Project.objects.filter(cat__slug=self.kwargs['cat_slug']).select_related('cat')
 

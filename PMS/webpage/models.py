@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.contrib.auth.models import User
 from django.contrib.postgres.fields import ArrayField
 from django.db import models
@@ -90,15 +91,29 @@ class Project(models.Model):
     title = models.CharField(max_length=250, null=True, blank=True, verbose_name="Наименование объекта")
     work_statement = models.TextField(null=True, blank=True, verbose_name="Описание работ")
     contract_id = models.CharField(max_length=250, null=True, blank=True, verbose_name="№ договора")
-    notice = models.TextField(null=True, blank=True, verbose_name="Примечание")
     customer = models.CharField(max_length=250, null=True, blank=True, verbose_name="Заказчик")
-    manager = models.ManyToManyField(Manager, verbose_name="Менеджеры", null=True, blank=True)
     executor_company = models.ManyToManyField(Company, verbose_name="Ответстве", null=True, blank=True)
     deadline = models.DateField(null=True, blank=True, verbose_name="Сроки исполнения")
     cat = models.ForeignKey(Category, verbose_name="Категория", null=True, blank=True, on_delete=models.CASCADE)
     status = models.ForeignKey(Status, on_delete=models.CASCADE, null=True, blank=True, verbose_name="Статус")
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name="URL", null=True, blank=True)
     note = models.ManyToManyField(Note, verbose_name="Поручение", null=True, blank=True, )
+    system = models.CharField(max_length=250, null=True, blank=True, verbose_name="Система")
+    state = models.CharField(max_length=300, null=True, blank=True, verbose_name="Состояние")
+    problems = models.CharField(max_length=300, null=True, blank=True, verbose_name="Проблемные вопросы")
+    activities = models.CharField(max_length=300, null=True, blank=True, verbose_name="Мероприятия")
+    finance = models.CharField(max_length=300, null=True, blank=True, verbose_name="Финансовые вопросы")
+    work_reason = models.CharField(max_length=300, null=True, blank=True, verbose_name="Основания для выполнения работ")
+    notice = models.TextField(null=True, blank=True, verbose_name="Примечание")
+    manager = models.ManyToManyField(Manager, verbose_name="Менеджеры", null=True, blank=True)
+
+
+    def alert(self):
+        current_datetime = datetime.now()
+        for n in self.note.all():
+            if n.created_at.day == current_datetime.day and n.created_at.month == current_datetime.month:
+                return True
+        return False
 
     def __str__(self):
         return self.title
@@ -110,3 +125,5 @@ class Project(models.Model):
         verbose_name = 'Проекты'
         verbose_name_plural = 'Проекты'
         ordering = ['id']
+
+

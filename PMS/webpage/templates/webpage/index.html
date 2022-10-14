@@ -46,9 +46,23 @@
           <input class="form-check-input" id="allCheck" type="checkbox" value="" id="flexCheckDefault">
         </div>
       </th>
-      {% for th in category.fields.all %}
-      <th scope="col">{{th}}</th>
-      {% endfor %}
+      {% if category.id == 5%}
+        <th scope="col">№</th>
+        <th scope="col">Объект</th>
+        <th scope="col">Основание для выполнения работ (оказания услуг)</th>
+        <th scope="col">Система</th>
+        <th scope="col">Состояние</th>
+        <th scope="col">Проблемные вопросы</th>
+        <th scope="col">Первоочередные мероприятия</th>
+        <th scope="col">Финансовые вопросы</th>
+        <th scope="col">Ответственный</th>
+        <th scope="col">Примечание</th>
+
+      {% else %}
+        {% for th in category.fields.all %}
+        <th scope="col">{{th}}</th>
+        {% endfor %}
+      {% endif %}
     </tr>
   </thead>
   <tbody>
@@ -59,28 +73,83 @@
           <input class="form-check-input checkboxes" type="checkbox" value="" id="flexCheckDefault">
         </div>
       </td>
-      {% if p.note.all %}
+      {% if p.alert %}
         <th class="order bg-warning" scope="row"></th>
       {% else %}
         <th  class="order" scope="row"></th>
       {% endif %}
       <td class="title-project"><a class="info" href="{{p.get_absolute_url}}">{{p.title}}</a></td>
-      <td>{{p.work_statement}}</td>
       <td>
-        {% if p.contract_id %}
-          {{p.contract_id}}
+        {% if category.id == 5%}
+           {% if p.work_reason %}
+            {{p.work_reason}}
+          {% else %}
+            -
+          {% endif %}
         {% else %}
-          -
+          {{p.work_statement}}
         {% endif %}
       </td>
-      <td>{{p.notice}}</td>
       <td>
-        {% if p.customer %}
-          {{p.customer}}
+        {% if category.id == 5%}
+          {% if p.system %}
+            {{p.system}}
+          {% else %}
+            -
+          {% endif %}
         {% else %}
-          -
+          {% if p.contract_id %}
+            {{p.contract_id}}
+          {% else %}
+            -
+          {% endif %}
         {% endif %}
       </td>
+      <td>
+        {% if category.id == 5%}
+          {% if p.state %}
+            {{p.state}}
+          {% else %}
+            -
+          {% endif %}
+        {% else %}
+          {{p.notice}}
+        {% endif %}
+      </td>
+      {% if category.id != 2 %}
+      <td>
+        {% if category.id == 5%}
+          {% if p.problems %}
+            {{p.problems}}
+          {% else %}
+            -
+          {% endif %}
+        {% else %}
+          {% if p.customer %}
+            {{p.customer}}
+          {% else %}
+            -
+          {% endif %}
+        {% endif %}
+      </td>
+      {% endif %}
+      {% if category.id == 5 %}
+        <td>
+          {% if p.activities %}
+            {{p.activities}}
+          {% else %}
+            -
+          {% endif %}
+        </td>
+        <td>
+          {% if p.finance %}
+            {{p.finance}}
+          {% else %}
+            -
+          {% endif %}
+        </td>
+      {% endif %}
+      {% if category.id != 5 %}
       <td class="executor_company ">
         <ul class="list-group list-group-flush">
         {% for c in p.executor_company.all %}
@@ -88,6 +157,7 @@
         {% endfor %}
         </ul>
       </td>
+      {% endif %}
       <td>
         <ul class="list-group list-group-flush">
         {% for m in p.manager.all %}
@@ -95,17 +165,22 @@
           {% endfor %}
         </ul>
       </td>
-      <td class="{{p.status.className}} status">
-        {{ p.status.title }}
-      </td>
-      {% if category.id != 4 %}
-      <td>
-        {% if p.deadline %}
-          {{p.deadline}}
-        {% else %}
-          -
+      {% if category.id != 5 %}
+          <td class="{{p.status.className}} status">
+            {{ p.status.title }}
+          </td>
+          {% if category.id != 4 %}
+          <td>
+            {% if p.deadline %}
+              {{p.deadline}}
+            {% else %}
+              -
+            {% endif %}
+          </td>
         {% endif %}
-      </td>
+      {% endif %}
+       {% if category.id == 5 %}
+        <td>{{p.notice}}</td>
       {% endif %}
 <!--      <td class="notes">-->
 <!--        {% for note in p.note_set.all %}-->
